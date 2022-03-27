@@ -15,7 +15,7 @@ const RepositoryTree: React.FC<Props> = ({ files }) => {
       <ul className="repository-tree__list">
         {files &&
           files.length > 0 &&
-          sortFiles(files).map((file: any) => {
+          sortFiles(files).map((file) => {
             return (
               <li key={file.name}>
                 {file.type === "blob" && <RepositoryFileCode file={file} />}

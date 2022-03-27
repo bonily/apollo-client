@@ -16,8 +16,6 @@ const RepositoryItemInfoPage = () => {
       ? (data.repository.object.entries as readonly RepositoryFile[])
       : [];
 
-  console.log(entries);
-
   return (
     <div className="repository-tree__page">
       <h2>
