@@ -1,0 +1,18 @@
+overwrite: true
+schema:
+  - https://api.github.com/graphql:
+      headers:
+        Authorization: bearer ${GITHUB_TOKEN}
+documents: src/**/*.gql
+generates:
+  src/graphql/index.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      useTypeImports: true
+      avoidOptionals: true
+      immutableTypes: true
+      withRefetchFn: true
+      nonOptionalTypename: true

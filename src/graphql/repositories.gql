@@ -1,0 +1,81 @@
+query getRepositories($first: Int, $after: String) {
+  search(query: "is:public", type: REPOSITORY, first: $first, after: $after) {
+    pageInfo {
+      endCursor
+      startCursor
+    }
+    repositoryCount
+    edges {
+      node {
+        ... on Repository {
+          id
+          name
+          url
+          description
+          stargazers {
+            totalCount
+          }
+          primaryLanguage {
+            name
+          }
+          languages(first: 5) {
+            nodes {
+              id
+              color
+              name
+            }
+          }
+          owner {
+            login
+            avatarUrl
+          }
+        }
+      }
+    }
+  }
+}
+
+fragment Files on Tree {
+  entries {
+    name
+    type
+    object {
+      ... on Blob {
+        text
+        byteSize
+      }
+    }
+  }
+}
+
+query getRepositoryInfo($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    object(expression: "HEAD:") {
+      # Top-level.
+      ... on Tree {
+        ...Files
+        entries {
+          object {
+            ... on Tree {
+              ...Files
+              entries {
+                object {
+                  ... on Tree {
+                    ...Files
+                    entries {
+                      object {
+                        ... on Tree {
+                          ...Files
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

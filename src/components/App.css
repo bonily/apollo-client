@@ -1,0 +1,14 @@
+.load-more-button {
+  background: lightblue;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #333;
+  cursor: pointer;
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0 auto;
+  padding: 10px;
+  text-align: center;
+  width: 150px;
+}

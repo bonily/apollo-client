@@ -1,0 +1,39 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+  align-items: center;
+}
+
+.header-title {
+  display: flex;
+  column-gap: 40px;
+  align-items: center;
+}
+
+.header h1 {
+  font-size: 1.8em;
+}
+
+.header__repos-count {
+  text-align: center;
+  padding: 10px;
+  background-color: lightgreen;
+  border-radius: 10px;
+}
+
+.header-load-button {
+  background: lightblue;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #333;
+  cursor: pointer;
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0 auto;
+  padding: 10px;
+  text-align: center;
+  width: 150px;
+  height: 35px;
+}
