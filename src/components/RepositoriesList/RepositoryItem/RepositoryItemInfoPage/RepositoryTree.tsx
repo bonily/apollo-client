@@ -7,9 +7,10 @@ import RepositoryFolder from "./RepositoryFolder";
 
 export interface Props {
   files: readonly RepositoryFile[];
+  path: string;
 }
 
-const RepositoryTree: React.FC<Props> = ({ files }) => {
+const RepositoryTree: React.FC<Props> = ({ files, path }) => {
   return (
     <div>
       <ul className="repository-tree__list">
@@ -19,7 +20,9 @@ const RepositoryTree: React.FC<Props> = ({ files }) => {
             return (
               <li key={file.name}>
                 {file.type === "blob" && <RepositoryFileCode file={file} />}
-                {file.type === "tree" && <RepositoryFolder file={file} />}
+                {file.type === "tree" && (
+                  <RepositoryFolder file={file} path={path} />
+                )}
               </li>
             );
           })}

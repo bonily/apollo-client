@@ -11,6 +11,8 @@ const RepositoryItemInfoPage = () => {
     variables: { owner, name },
   });
 
+  console.log(data);
+
   const entries =
     data?.repository?.object?.__typename === "Tree"
       ? (data.repository.object.entries as readonly RepositoryFile[])
@@ -23,7 +25,7 @@ const RepositoryItemInfoPage = () => {
       </h2>
       {loading && <Loading />}
       {error && <Error error={error.message} />}
-      {entries && <RepositoryTree files={entries} />}
+      {entries && <RepositoryTree files={entries} path={"HEAD:"} />}
     </div>
   );
 };

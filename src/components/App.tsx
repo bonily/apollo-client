@@ -24,7 +24,6 @@ function App() {
         after: after,
       },
       updateQuery: (prev, { fetchMoreResult }) => {
-        console.log("m,,.", fetchMoreResult);
         setIsLoadingMore(false);
         if (!fetchMoreResult) return prev;
         const prevResult = prev.search?.edges || [];

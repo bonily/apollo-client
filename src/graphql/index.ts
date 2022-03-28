@@ -23516,7 +23516,7 @@ export type GetRepositoriesQueryVariables = Exact<{
 
 export type GetRepositoriesQuery = { readonly __typename: 'Query', readonly search: { readonly __typename: 'SearchResultItemConnection', readonly repositoryCount: number, readonly pageInfo: { readonly __typename: 'PageInfo', readonly endCursor: string | null, readonly startCursor: string | null }, readonly edges: ReadonlyArray<{ readonly __typename: 'SearchResultItemEdge', readonly node: { readonly __typename: 'App' } | { readonly __typename: 'Discussion' } | { readonly __typename: 'Issue' } | { readonly __typename: 'MarketplaceListing' } | { readonly __typename: 'Organization' } | { readonly __typename: 'PullRequest' } | { readonly __typename: 'Repository', readonly id: string, readonly name: string, readonly url: any, readonly description: string | null, readonly stargazers: { readonly __typename: 'StargazerConnection', readonly totalCount: number }, readonly primaryLanguage: { readonly __typename: 'Language', readonly name: string } | null, readonly languages: { readonly __typename: 'LanguageConnection', readonly nodes: ReadonlyArray<{ readonly __typename: 'Language', readonly id: string, readonly color: string | null, readonly name: string } | null> | null } | null, readonly owner: { readonly __typename: 'Organization', readonly login: string, readonly avatarUrl: any } | { readonly __typename: 'User', readonly login: string, readonly avatarUrl: any } } | { readonly __typename: 'User' } | null } | null> | null } };
 
-export type FilesFragment = { readonly __typename: 'Tree', readonly entries: ReadonlyArray<{ readonly __typename: 'TreeEntry', readonly name: string, readonly type: string, readonly object: { readonly __typename: 'Blob', readonly text: string | null, readonly byteSize: number } | { readonly __typename: 'Commit' } | { readonly __typename: 'Tag' } | { readonly __typename: 'Tree' } | null }> | null };
+export type FilesFragment = { readonly __typename: 'Tree', readonly entries: ReadonlyArray<{ readonly __typename: 'TreeEntry', readonly name: string, readonly type: string, readonly repository: { readonly __typename: 'Repository', readonly name: string, readonly owner: { readonly __typename: 'Organization', readonly login: string } | { readonly __typename: 'User', readonly login: string } }, readonly object: { readonly __typename: 'Blob', readonly text: string | null, readonly byteSize: number } | { readonly __typename: 'Commit' } | { readonly __typename: 'Tag' } | { readonly __typename: 'Tree' } | null }> | null };
 
 export type GetRepositoryInfoQueryVariables = Exact<{
   owner: Scalars['String'];
@@ -23524,13 +23524,28 @@ export type GetRepositoryInfoQueryVariables = Exact<{
 }>;
 
 
-export type GetRepositoryInfoQuery = { readonly __typename: 'Query', readonly repository: { readonly __typename: 'Repository', readonly object: { readonly __typename: 'Blob' } | { readonly __typename: 'Commit' } | { readonly __typename: 'Tag' } | { readonly __typename: 'Tree', readonly entries: ReadonlyArray<{ readonly __typename: 'TreeEntry', readonly name: string, readonly type: string, readonly object: { readonly __typename: 'Blob', readonly text: string | null, readonly byteSize: number } | { readonly __typename: 'Commit' } | { readonly __typename: 'Tag' } | { readonly __typename: 'Tree', readonly entries: ReadonlyArray<{ readonly __typename: 'TreeEntry', readonly name: string, readonly type: string, readonly object: { readonly __typename: 'Blob', readonly text: string | null, readonly byteSize: number } | { readonly __typename: 'Commit' } | { readonly __typename: 'Tag' } | { readonly __typename: 'Tree', readonly entries: ReadonlyArray<{ readonly __typename: 'TreeEntry', readonly name: string, readonly type: string, readonly object: { readonly __typename: 'Blob', readonly text: string | null, readonly byteSize: number } | { readonly __typename: 'Commit' } | { readonly __typename: 'Tag' } | { readonly __typename: 'Tree', readonly entries: ReadonlyArray<{ readonly __typename: 'TreeEntry', readonly name: string, readonly type: string, readonly object: { readonly __typename: 'Blob', readonly text: string | null, readonly byteSize: number } | { readonly __typename: 'Commit' } | { readonly __typename: 'Tag' } | { readonly __typename: 'Tree' } | null }> | null } | null }> | null } | null }> | null } | null }> | null } | null } | null };
+export type GetRepositoryInfoQuery = { readonly __typename: 'Query', readonly repository: { readonly __typename: 'Repository', readonly object: { readonly __typename: 'Blob' } | { readonly __typename: 'Commit' } | { readonly __typename: 'Tag' } | { readonly __typename: 'Tree', readonly entries: ReadonlyArray<{ readonly __typename: 'TreeEntry', readonly name: string, readonly type: string, readonly repository: { readonly __typename: 'Repository', readonly name: string, readonly owner: { readonly __typename: 'Organization', readonly login: string } | { readonly __typename: 'User', readonly login: string } }, readonly object: { readonly __typename: 'Blob', readonly text: string | null, readonly byteSize: number } | { readonly __typename: 'Commit' } | { readonly __typename: 'Tag' } | { readonly __typename: 'Tree' } | null }> | null } | null } | null };
+
+export type GetRepositoryFileInfoQueryVariables = Exact<{
+  owner: Scalars['String'];
+  name: Scalars['String'];
+  path: Scalars['String'];
+}>;
+
+
+export type GetRepositoryFileInfoQuery = { readonly __typename: 'Query', readonly repository: { readonly __typename: 'Repository', readonly object: { readonly __typename: 'Blob' } | { readonly __typename: 'Commit' } | { readonly __typename: 'Tag' } | { readonly __typename: 'Tree', readonly entries: ReadonlyArray<{ readonly __typename: 'TreeEntry', readonly name: string, readonly type: string, readonly repository: { readonly __typename: 'Repository', readonly name: string, readonly owner: { readonly __typename: 'Organization', readonly login: string } | { readonly __typename: 'User', readonly login: string } }, readonly object: { readonly __typename: 'Blob', readonly text: string | null, readonly byteSize: number } | { readonly __typename: 'Commit' } | { readonly __typename: 'Tag' } | { readonly __typename: 'Tree' } | null }> | null } | null } | null };
 
 export const FilesFragmentDoc = gql`
     fragment Files on Tree {
   entries {
     name
     type
+    repository {
+      name
+      owner {
+        login
+      }
+    }
     object {
       ... on Blob {
         text
@@ -23616,27 +23631,6 @@ export const GetRepositoryInfoDocument = gql`
     object(expression: "HEAD:") {
       ... on Tree {
         ...Files
-        entries {
-          object {
-            ... on Tree {
-              ...Files
-              entries {
-                object {
-                  ... on Tree {
-                    ...Files
-                    entries {
-                      object {
-                        ... on Tree {
-                          ...Files
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     }
   }
@@ -23673,4 +23667,48 @@ export type GetRepositoryInfoLazyQueryHookResult = ReturnType<typeof useGetRepos
 export type GetRepositoryInfoQueryResult = Apollo.QueryResult<GetRepositoryInfoQuery, GetRepositoryInfoQueryVariables>;
 export function refetchGetRepositoryInfoQuery(variables: GetRepositoryInfoQueryVariables) {
       return { query: GetRepositoryInfoDocument, variables: variables }
+    }
+export const GetRepositoryFileInfoDocument = gql`
+    query getRepositoryFileInfo($owner: String!, $name: String!, $path: String!) {
+  repository(owner: $owner, name: $name) {
+    object(expression: $path) {
+      ... on Tree {
+        ...Files
+      }
+    }
+  }
+}
+    ${FilesFragmentDoc}`;
+
+/**
+ * __useGetRepositoryFileInfoQuery__
+ *
+ * To run a query within a React component, call `useGetRepositoryFileInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRepositoryFileInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRepositoryFileInfoQuery({
+ *   variables: {
+ *      owner: // value for 'owner'
+ *      name: // value for 'name'
+ *      path: // value for 'path'
+ *   },
+ * });
+ */
+export function useGetRepositoryFileInfoQuery(baseOptions: Apollo.QueryHookOptions<GetRepositoryFileInfoQuery, GetRepositoryFileInfoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRepositoryFileInfoQuery, GetRepositoryFileInfoQueryVariables>(GetRepositoryFileInfoDocument, options);
+      }
+export function useGetRepositoryFileInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRepositoryFileInfoQuery, GetRepositoryFileInfoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRepositoryFileInfoQuery, GetRepositoryFileInfoQueryVariables>(GetRepositoryFileInfoDocument, options);
+        }
+export type GetRepositoryFileInfoQueryHookResult = ReturnType<typeof useGetRepositoryFileInfoQuery>;
+export type GetRepositoryFileInfoLazyQueryHookResult = ReturnType<typeof useGetRepositoryFileInfoLazyQuery>;
+export type GetRepositoryFileInfoQueryResult = Apollo.QueryResult<GetRepositoryFileInfoQuery, GetRepositoryFileInfoQueryVariables>;
+export function refetchGetRepositoryFileInfoQuery(variables: GetRepositoryFileInfoQueryVariables) {
+      return { query: GetRepositoryFileInfoDocument, variables: variables }
     }

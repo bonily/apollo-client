@@ -39,6 +39,12 @@ fragment Files on Tree {
   entries {
     name
     type
+    repository {
+      name
+      owner {
+        login
+      }
+    }
     object {
       ... on Blob {
         text
@@ -54,27 +60,16 @@ query getRepositoryInfo($owner: String!, $name: String!) {
       # Top-level.
       ... on Tree {
         ...Files
-        entries {
-          object {
-            ... on Tree {
-              ...Files
-              entries {
-                object {
-                  ... on Tree {
-                    ...Files
-                    entries {
-                      object {
-                        ... on Tree {
-                          ...Files
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+      }
+    }
+  }
+}
+
+query getRepositoryFileInfo($owner: String!, $name: String!, $path: String!) {
+  repository(owner: $owner, name: $name) {
+    object(expression: $path) {
+      ... on Tree {
+        ...Files
       }
     }
   }
