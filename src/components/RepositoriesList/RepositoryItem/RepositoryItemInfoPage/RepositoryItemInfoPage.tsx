@@ -11,8 +11,6 @@ const RepositoryItemInfoPage = () => {
     variables: { owner, name },
   });
 
-  console.log(data);
-
   const entries =
     data?.repository?.object?.__typename === "Tree"
       ? (data.repository.object.entries as readonly RepositoryFile[])

@@ -29,7 +29,6 @@ function App() {
         const prevResult = prev.search?.edges || [];
 
         const moreResult = fetchMoreResult.search.edges || [];
-        console.log(prevResult, moreResult);
         return {
           ...prev,
           search: {

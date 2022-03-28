@@ -1,7 +1,5 @@
 ## Сервис для просмотра публичных репозиториев GitHub и файлов в них.
 
-На данный момент для просмотра доступны объекты со вложенностью не более 5 уровней.
-
 ## Для запуска проекта локально:
 
 1. Сформируйте свой персональный токен GitHub [Инструкция](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
